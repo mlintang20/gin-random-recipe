@@ -2,7 +2,9 @@ package middleware
 
 import (
 	"gin/util"
+	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -13,7 +15,12 @@ var JWTSecretKey = []byte("secret-key")
 
 func ValidateAPIKey() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
-		const apiKey string = "aw13u210312321"
+		// const apiKey string = "aw13u210312321"
+		apiKey := os.Getenv("API_KEY")
+		if apiKey == "" {
+			log.Fatal("env API_KEY not set")
+			return
+		}
 		//check header ada atau tidak
 		key := ctx.GetHeader("x-api-key")
 
